@@ -1,7 +1,10 @@
-django
-numpy
-torch
-torchvision
-imageio
-indexed_gzip
-Pillow
+Django==2.2
+imageio==2.4.1
+indexed-gzip==0.8.8
+numpy==1.16.2
+torch==1.0.1.post2
+torchvision==0.2.1
+Pillow==5.3.0
+scikit-image==0.15.0
+scikit-learn==0.20.1
+scipy==1.1.0
