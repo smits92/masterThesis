@@ -34,10 +34,10 @@ class GANFormer(object):
             output = self.model(inputTensor)
             output = np.squeeze(output.data.cpu().numpy())
 
-        output *= 255
+
 
         print('Time per frame: {:.2f}'.format(time.time()-start))
-        return np.clip(output, a_min=0, a_max=255)
+        return output
 
     def loadJit(self, path):
         self.model = jt.load(path, map_location='cpu')

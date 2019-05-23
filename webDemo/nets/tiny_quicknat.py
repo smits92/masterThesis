@@ -60,7 +60,7 @@ class TinyQuickNAT(nn.Module):
         if self.training:
             return prob
         else:
-            return prob
+            return torch.clamp(prob, min=0, max=1)
 
     @property
     def is_cuda(self):
