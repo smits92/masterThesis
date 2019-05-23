@@ -1,6 +1,6 @@
 # Exploring GAN applications for Ultrasound imaging
 
-##Web Demo
+## Web Demo
 For the Web Demo you have to install:
 - django
 - torch
@@ -9,6 +9,7 @@ For the Web Demo you have to install:
 Then cd to the folder webDemo and run:
 ```
 $ python manage.py runserver
+
 Watching for file changes with StatReloader
 Performing system checks...
 
