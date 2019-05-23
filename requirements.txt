@@ -1,0 +1,7 @@
+django
+numpy
+torch
+torchvision
+imageio
+indexed_gzip
+Pillow
