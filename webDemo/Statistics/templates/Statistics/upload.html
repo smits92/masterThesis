@@ -1,0 +1,14 @@
+{% load static %}
+
+{% block content %}
+
+<html>
+  <body style="background-color:#34495E;">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Upload</button>
+    </form>
+  </body>
+</html>
+{% endblock %}

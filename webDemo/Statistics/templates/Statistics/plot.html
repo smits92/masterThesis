@@ -1,0 +1,350 @@
+{% load static %}
+
+{% block content %}
+
+<html>
+<head>
+    <title>GANFormer</title>
+    <!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
+{#    <script src="{% static 'Statistics/plotly-latest.min.js' %}"></script>#}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example with a side menu that hides on mobile, just like the Pure website.">
+
+
+    <link rel="stylesheet" href="{% static 'Statistics/side-menu1.css' %}">
+    <link rel="stylesheet" href="{% static 'Statistics/pure.css' %}">
+    <script src="{% static 'Statistics/slider.js' %}"></script>
+
+    <style>
+
+        {#* {box-sizing: border-box;}#}
+
+.img-comp-container {
+  position: relative;
+  height: 200px; /*should be the same height as the images*/
+}
+
+.img-comp-img {
+  position: absolute;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+.img-comp-img img {
+  display: block;
+  vertical-align: middle;
+}
+
+.img-comp-slider {
+  position: absolute;
+  z-index: 9;
+  cursor: ew-resize;
+  /*set the appearance of the slider:*/
+  width: 40px;
+  height: 40px;
+  background-color: #2196F3;
+  opacity: 0.7;
+  border-radius: 50%;
+}
+.box {
+  width: 10%;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.2);
+  padding: 35px;
+  border: 2px solid #fff;
+  border-radius: 20px/50px;
+  background-clip: padding-box;
+  text-align: center;
+}
+
+.button {
+  font-size: 1em;
+  padding: 10px;
+  color: #fff;
+  border: 2px solid #3498DB;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.button:hover {
+  background: #3498DB;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #3498DB;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+.mycolumn {
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.myrow::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@media screen and (max-width: 700px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+}
+    </style>
+
+</head>
+
+<body style="background-color:#ECECEC">
+
+<div id="layout">
+    <!-- Menu toggle -->
+    <a href="#menu" id="menuLink" class="menu-link">
+        <!-- Hamburger icon -->
+        <span></span>
+    </a>
+
+    <div id="menu">
+        <div class="pure-menu">
+            <a class="pure-menu-heading" href="/">GANFormer</a>
+            <ul class="pure-menu-list">
+                <li><a href="/imshow/1" class="pure-menu-link">Biceps</a></li>
+                <li><a href="/imshow/2" class="pure-menu-link">Carotid</a></li>
+                <li><a href="/imshow/3" class="pure-menu-link">Thyroid</a></li>
+            </ul>
+        </div>
+    </div>
+
+  <div id="main">
+
+      {% if img_nr == 0 %}
+      <div class="header" style="background-color:#57565A;text-align:center">
+          <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ file_form.as_p }}
+              <button type="submit" class="pure-button pure-button-primary">Upload</button>
+          </form>
+      </div>
+      {% endif %}
+
+      {% if img_nr == 1 %}
+       <div class="header" style="background-color:#57565A;text-align:center">
+            <h2 class="pure-menu-heading">Biceps</h2>
+      </div>
+            <table class="pure-table"; align="center">
+                <thead>
+                    <tr>
+                        <th align="center">Original vs GANFormed (Longitudinal)</th>
+                        <th align="center">Original vs GANFormed (Transverse)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                      <td>
+                      <div class="pure-img">
+                        <img src="{% static 'Statistics/RecImg.png' %}" alt="Bicubic" style="width:600px;height:1px">
+                      </div>
+                            <div class="img-comp-container"; align="right">
+                            <div class="img-comp-img">
+                                <img src="{% static 'Statistics/biceps/Recon_long.png' %}" alt="GANFormed1" style="width:600px;">
+                            </div>
+                            <div class="img-comp-img img-comp-overlay">
+                                <img src="{% static 'Statistics/biceps/Label_long.png' %}" alt="Original1" style="width:600px;">
+                            </div>
+                          </div>
+
+                        </td>
+                        <td>
+                      <div class="pure-img">
+                        <img src="{% static 'Statistics/RecImg.png' %}" alt="Bicubic" style="width:600px;height:1px">
+                      </div>
+                            <div class="img-comp-container"; align="right">
+                            <div class="img-comp-img">
+                                <img src="{% static 'Statistics/biceps/Recon_trans.png' %}" alt="GANFormed1" style="width:600px;">
+                            </div>
+                            <div class="img-comp-img img-comp-overlay">
+                                <img src="{% static 'Statistics/biceps/Label_trans.png' %}" alt="Original1" style="width:600px;">
+                            </div>
+                          </div>
+
+                          <script>
+                              initComparisons();
+                          </script>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+      {% endif %}
+
+        {% if img_nr == 2 %}
+                   <div class="header" style="background-color:#57565A;text-align:center">
+            <h2 class="pure-menu-heading">Carotid</h2>
+      </div>
+            <table class="pure-table"; align="center">
+                <thead>
+                    <tr>
+                        <th align="center">Original vs GANFormed (Longitudinal)</th>
+                        <th align="center">Original vs GANFormed (Transverse)</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                                                <td>
+                      <div class="pure-img">
+                        <img src="{% static 'Statistics/RecImg.png' %}" alt="Bicubic" style="width:600px;height:1px">
+                      </div>
+                            <div class="img-comp-container"; align="right">
+                            <div class="img-comp-img">
+                                <img src="{% static 'Statistics/carotid/Recon_long.png' %}" alt="GANFormed" style="width:600px;">
+                            </div>
+                            <div class="img-comp-img img-comp-overlay">
+                                <img src="{% static 'Statistics/carotid/Label_long.png' %}" alt="Original"  style="width:600px;">
+                            </div>
+                          </div>
+
+                        </td>
+                        <td>
+                      <div class="pure-img">
+                        <img src="{% static 'Statistics/RecImg.png' %}" alt="Bicubic" style="width:600px;height:1px">
+                      </div>
+                            <div class="img-comp-container"; align="right">
+                            <div class="img-comp-img">
+                                <img src="{% static 'Statistics/carotid/Recon_trans.png' %}" alt="GANFormed" style="width:600px;">
+                            </div>
+                            <div class="img-comp-img img-comp-overlay">
+                                <img src="{% static 'Statistics/carotid/Label_trans.png' %}" alt="Original"  style="width:600px;">
+                            </div>
+                          </div>
+
+                          <script>
+                              initComparisons();
+                          </script>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+      {% endif %}
+
+          {% if img_nr == 3 %}
+                   <div class="header" style="background-color:#57565A;text-align:center">
+            <h2 class="pure-menu-heading">Thyroid</h2>
+      </div>
+            <table class="pure-table"; align="center">
+                <thead>
+                    <tr>
+                        <th align="center">Original vs GANFormed (Longitudinal)</th>
+                        <th align="center">Original vs GANFormed (Transverse)</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                                                <td>
+                      <div class="pure-img">
+                        <img src="{% static 'Statistics/RecImg.png' %}" alt="Bicubic" style="width:600px;height:1px">
+                      </div>
+                            <div class="img-comp-container"; align="right">
+                            <div class="img-comp-img">
+                                <img src="{% static 'Statistics/thyroid/Recon_long.png' %}" alt="GANFormed" style="width:600px;">
+                            </div>
+                            <div class="img-comp-img img-comp-overlay">
+                                <img src="{% static 'Statistics/thyroid/Label_long.png' %}" alt="Original"  style="width:600px;">
+                            </div>
+                          </div>
+
+                        </td>
+                        <td>
+                      <div class="pure-img">
+                        <img src="{% static 'Statistics/RecImg.png' %}" alt="Bicubic" style="width:600px;height:1px">
+                      </div>
+                            <div class="img-comp-container"; align="right">
+                            <div class="img-comp-img">
+                                <img src="{% static 'Statistics/thyroid/Recon_trans.png' %}" alt="GANFormed" style="width:600px;">
+                            </div>
+                            <div class="img-comp-img img-comp-overlay">
+                                <img src="{% static 'Statistics/thyroid/Label_trans.png' %}" alt="Original"  style="width:600px;">
+                            </div>
+                          </div>
+
+                          <script>
+                              initComparisons();
+                          </script>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+      {% endif %}
+
+
+
+  </div>
+
+  </div>
+</div><script src="{% static 'Statistics/ui.js' %}"></script>
+
+</body>
+</html>
+
+{% endblock %}
