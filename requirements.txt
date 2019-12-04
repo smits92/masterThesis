@@ -1,4 +1,4 @@
-Django==2.2
+Django==2.2.8
 imageio==2.4.1
 indexed-gzip==0.8.8
 numpy==1.16.2
